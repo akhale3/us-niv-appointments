@@ -88,7 +88,9 @@ const config = require(`${__dirname}/config`);
 
   console.log(filteredMap);
 
-  await sendMail(filteredMap);
+  if (config.mailer.enabled) {
+    await sendMail(filteredMap);
+  }
 
   await browser.close();
 })();

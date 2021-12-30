@@ -13,8 +13,9 @@ module.exports = {
     email: process.env.CREDENTIALS_EMAIL,
     password: process.env.CREDENTIALS_PASSWORD
   },
-  headless: !process.env.DEBUG,
+  headless: process.env.HEADLESS === 'true',
   mailer: {
+    enabled: process.env.MAILER_ENABLED === 'true',
     email: process.env.MAILER_EMAIL,
     password: process.env.MAILER_PASSWORD,
     toEmails: process.env.MAILER_TO_EMAILS
