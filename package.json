@@ -1,0 +1,33 @@
+{
+  "name": "us-niv-appointments",
+  "version": "0.1.0",
+  "description": "Automated web scraper for finding the earliest US Non-Immigrant Visa interview appointments in North America",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/akhale3/us-niv-appointments.git"
+  },
+  "keywords": [
+    "us",
+    "niv",
+    "visa",
+    "appointment",
+    "canada",
+    "north",
+    "america"
+  ],
+  "author": "Anish Khale",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/akhale3/us-niv-appointments/issues"
+  },
+  "homepage": "https://github.com/akhale3/us-niv-appointments#readme",
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "nodemailer": "^6.7.2",
+    "puppeteer": "^13.0.1"
+  }
+}
