@@ -8,6 +8,7 @@ module.exports = {
     toronto: '94',
     vancouver: '95'
   },
+  targetDate: process.env.TARGET_DATE,
   credentials: {
     email: process.env.CREDENTIALS_EMAIL,
     password: process.env.CREDENTIALS_PASSWORD

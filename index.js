@@ -56,7 +56,23 @@ const config = require(`${__dirname}/config`);
     console.log(`Email sent with messageId: ${info.messageId}`);
   };
 
-  const appointmentList = {};
+  const filterAppointments = (appointmentMap, targetDate) => {
+    const filteredMap = {};
+
+    Object.entries(appointmentMap).forEach(([name, values]) => {
+      filteredMap[name] = values.filter(value => {
+        if (!targetDate) {
+          return value.date;
+        }
+
+        return new Date(value.date) < new Date(targetDate);
+      }).map(value => value.date);
+    });
+
+    return filteredMap;
+  };
+
+  const appointmentMap = {};
   const consulates = Object.entries(config.consulates);
   while (consulates.length !== 0) {
     const [name, value] = consulates.shift();
@@ -65,12 +81,14 @@ const config = require(`${__dirname}/config`);
       value
     );
 
-    appointmentList[name] = appointments;
+    appointmentMap[name] = appointments;
   }
 
-  console.log(appointmentList);
+  const filteredMap = filterAppointments(appointmentMap, config.targetDate);
 
-  await sendMail(appointmentList);
+  console.log(filteredMap);
+
+  await sendMail(filteredMap);
 
   await browser.close();
 })();
