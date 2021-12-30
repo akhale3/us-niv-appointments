@@ -1,7 +1,7 @@
 {
   "name": "us-niv-appointments",
   "version": "0.1.0",
-  "description": "Automated web scraper for finding the earliest US Non-Immigrant Visa interview appointments in North America",
+  "description": "Automated web scraper for finding the earliest US Non-Immigrant Visa interview appointments in Canada",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
