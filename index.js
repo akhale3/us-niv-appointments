@@ -60,6 +60,14 @@ const config = require(`${__dirname}/config`);
     const filteredMap = {};
 
     Object.entries(appointmentMap).forEach(([name, values]) => {
+      if (values.error) {
+        filteredMap[name] = [];
+
+        console.log(`Error: ${values.error}`);
+
+        return;
+      }
+
       filteredMap[name] = values.filter(value => {
         if (!targetDate) {
           return value.date;
