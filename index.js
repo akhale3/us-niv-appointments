@@ -14,10 +14,14 @@ const config = require(`${__dirname}/config`);
   });
 
   const email = await page.waitForSelector('#user_email');
-  await email.type(config.credentials.email);
+  await email.type(config.credentials.email, {
+    delay: 100
+  });
 
   const password = await page.waitForSelector('#user_password');
-  await password.type(config.credentials.password);
+  await password.type(config.credentials.password, {
+    delay: 100
+  });
 
   await page.waitForSelector('#policy_confirmed');
   await page.evaluate(() => {
@@ -28,7 +32,9 @@ const config = require(`${__dirname}/config`);
     page.waitForNavigation({
       waitUntil: 'networkidle0'
     }),
-    page.click('input[type="submit"]')
+    page.click('input[type="submit"]', {
+      delay: 100
+    })
   ]);
 
   const getAppointments = async (value) => {
@@ -56,30 +62,6 @@ const config = require(`${__dirname}/config`);
     console.log(`Email sent with messageId: ${info.messageId}`);
   };
 
-  const filterAppointments = (appointmentMap, targetDate) => {
-    const filteredMap = {};
-
-    Object.entries(appointmentMap).forEach(([name, values]) => {
-      if (values.error) {
-        filteredMap[name] = [];
-
-        console.log(`Error: ${values.error}`);
-
-        return;
-      }
-
-      filteredMap[name] = values.filter(value => {
-        if (!targetDate) {
-          return value.date;
-        }
-
-        return new Date(value.date) < new Date(targetDate);
-      }).map(value => value.date);
-    });
-
-    return filteredMap;
-  };
-
   const appointmentMap = {};
   const consulates = Object.entries(config.consulates);
   while (consulates.length !== 0) {
@@ -89,15 +71,25 @@ const config = require(`${__dirname}/config`);
       value
     );
 
-    appointmentMap[name] = appointments;
+    if (appointments.error) {
+      appointmentMap[name] = [];
+
+      console.log(`Error: ${appointments.error}`);
+    } else {
+      appointmentMap[name] = appointments.filter(value => {
+        if (!config.targetDate) {
+          return value.date;
+        }
+
+        return new Date(value.date) < new Date(config.targetDate);
+      }).map(value => value.date);
+    }
   }
 
-  const filteredMap = filterAppointments(appointmentMap, config.targetDate);
-
-  console.log(filteredMap);
+  console.log(appointmentMap);
 
   if (config.mailer.enabled) {
-    await sendMail(filteredMap);
+    await sendMail(appointmentMap);
   }
 
   await browser.close();
